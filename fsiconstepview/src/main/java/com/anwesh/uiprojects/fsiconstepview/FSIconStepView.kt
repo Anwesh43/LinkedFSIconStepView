@@ -209,4 +209,26 @@ class FSIconStepView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : FSIconStepView) {
+        private val animator : Animator = Animator(view)
+
+        private val fsis : FSIconStep = FSIconStep(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(BACK_GROUND)
+            fsis.draw(canvas, paint)
+            animator.animate {
+                fsis.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            fsis.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
