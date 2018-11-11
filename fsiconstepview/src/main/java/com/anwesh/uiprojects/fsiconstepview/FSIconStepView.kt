@@ -11,6 +11,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.content.Context
 import android.app.Activity
+import android.util.Log
 
 val nodes : Int = 5
 
@@ -89,5 +90,27 @@ class FSIconStepView(ctx : Context) : View(ctx) {
             }
         }
         return true
+    }
+
+    data class State(var scale : Float = 0f, var dir : Float = 0f, var prevScale : Float = 0f) {
+
+        fun update(cb : (Float) -> Unit) {
+            val k : Float = scale.updateScale(dir, lines, 1)
+            scale += k
+            Log.d("update scale is", "$k")
+            if (Math.abs(scale - prevScale) > 1) {
+                scale = prevScale + dir
+                dir = 0f
+                prevScale = scale
+                cb(prevScale)
+            }
+        }
+
+        fun startUpdating(cb : () -> Unit) {
+            if (dir == 0f) {
+                dir = 1f - 2 * prevScale
+                cb()
+            }
+        }
     }
 }
