@@ -233,4 +233,12 @@ class FSIconStepView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+        fun create(activity : Activity) : FSIconStepView {
+            val view : FSIconStepView = FSIconStepView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
