@@ -83,8 +83,14 @@ class FSIconStepView(ctx : Context) : View(ctx) {
 
     private val renderer : Renderer = Renderer(this)
 
+    var onAnimationListener : OnAnimationListener? = null
+
     override fun onDraw(canvas : Canvas) {
         renderer.render(canvas, paint)
+    }
+
+    fun addOnAnimationListener(onComplete : (Int) -> Unit, onReset : (Int) -> Unit) {
+        onAnimationListener = OnAnimationListener(onComplete, onReset)
     }
 
     override fun onTouchEvent(event : MotionEvent) : Boolean {
@@ -225,6 +231,10 @@ class FSIconStepView(ctx : Context) : View(ctx) {
             animator.animate {
                 fsis.update {i, scl ->
                     animator.stop()
+                    when (scl) {
+                        0f -> view.onAnimationListener?.onReset?.invoke(i)
+                        1f -> view.onAnimationListener?.onComplete?.invoke(i)
+                    }
                 }
             }
         }
@@ -243,4 +253,6 @@ class FSIconStepView(ctx : Context) : View(ctx) {
             return view
         }
     }
+
+    data class OnAnimationListener(var onComplete : (Int) -> Unit, var onReset : (Int) -> Unit)
 }
