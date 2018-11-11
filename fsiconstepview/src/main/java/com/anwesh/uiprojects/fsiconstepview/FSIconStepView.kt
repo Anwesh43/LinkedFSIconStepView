@@ -25,11 +25,11 @@ val FRONT_COLOR : Int = Color.WHITE
 
 val BACK_GROUND : Int = Color.parseColor("#311B92")
 
-val STROKE_FACTOR : Int = 60
+val STROKE_FACTOR : Int = 100
 
 val SIZE_FACTOR : Int = 3
 
-val FS_SIZE_FACTOR : Int = 5
+val FS_SIZE_FACTOR : Int = 3
 
 fun Int.getInverse() : Float = 1f / this
 
@@ -67,7 +67,7 @@ fun Canvas.drawFSISNode(i : Int, scale : Float, paint : Paint) {
             val sck : Float = sc.divideScale(k, parts)
             save()
             rotate(90f * k)
-            drawLine(0f, 0f, -lSize * sc, 0f, paint)
+            drawLine(0f, 0f, -lSize * sck, 0f, paint)
             restore()
         }
         restore()
@@ -97,7 +97,7 @@ class FSIconStepView(ctx : Context) : View(ctx) {
     data class State(var scale : Float = 0f, var dir : Float = 0f, var prevScale : Float = 0f) {
 
         fun update(cb : (Float) -> Unit) {
-            val k : Float = scale.updateScale(dir, lines, 1)
+            val k : Float = scale.updateScale(dir, lines * parts, 1)
             scale += k
             Log.d("update scale is", "$k")
             if (Math.abs(scale - prevScale) > 1) {
