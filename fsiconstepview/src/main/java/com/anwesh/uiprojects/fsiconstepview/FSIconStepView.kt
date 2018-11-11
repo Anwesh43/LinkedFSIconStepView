@@ -31,6 +31,8 @@ val SIZE_FACTOR : Int = 3
 
 val FS_SIZE_FACTOR : Int = 3
 
+val DELAY : Long = 30
+
 fun Int.getInverse() : Float = 1f / this
 
 fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.getInverse(), Math.max(0f, this - n.getInverse() * i)) * n
@@ -122,7 +124,7 @@ class FSIconStepView(ctx : Context) : View(ctx) {
             if (animated) {
                 cb()
                 try {
-                    Thread.sleep(50)
+                    Thread.sleep(DELAY)
                     view.invalidate()
                 } catch(ex : Exception) {
 
