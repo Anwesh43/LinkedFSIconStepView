@@ -16,5 +16,17 @@ val nodes : Int = 5
 
 val lines : Int = 4
 
+val parts : Int = 2
+
 val scGap : Float = 0.05f
 
+fun Int.getInverse() : Float = 1f / this
+
+fun Float.divideScale(i : Int, n : Int) : Float = Math.min(n.getInverse(), Math.max(0f, this - n.getInverse() * i)) * n
+
+fun Float.getScaleFactor() : Float = Math.floor(this/0.5).toFloat()
+
+fun Float.updateScale(dir : Float, a : Int, b : Int) : Float {
+    val sf : Float = getScaleFactor()
+    return scGap * dir * ((1 - sf) * a.getInverse() + sf * b.getInverse())
+} 
